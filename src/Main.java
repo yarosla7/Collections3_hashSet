@@ -1,11 +1,13 @@
 import driver.*;
-import transport.*;
+import transport.Bus;
+import transport.Car;
+import transport.Transport;
+import transport.Truck;
 import transport.stuff.Mechanic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class Main {
 
@@ -25,8 +27,8 @@ public class Main {
 
 
         Truck kamaz = new Truck("КамАЗ", "54901", 7.6, new LicenseC("John", true, 4), Truck.Weight.N2);
-        Truck sollers = new Truck("Sollers", "Argo", 4.6, Truck.Weight.N3);
-        Truck dongfeng = new Truck("Dongfeng", "Captain-T", 5.5, Truck.Weight.N1);
+        Truck sollers = new Truck("Sollers", "Argo", 4.6, new LicenseC("John", true, 4), Truck.Weight.N3);
+        Truck dongfeng = new Truck("Dongfeng", "Captain-T", 5.5, new LicenseC("Dick", true, 4), Truck.Weight.N1);
         Truck manTruck = new Truck("MAN", "TGS 6X6", 7.9, new LicenseC("Dick", true, 4), Truck.Weight.N3);
 
         LicenseD morgan = new LicenseD("Morgan", true, 5);
@@ -35,20 +37,10 @@ public class Main {
         LicenseB nik = new LicenseB("Nikita", true, 1);
         //testing:
 
-//        List<Transport<?>> forRace = List.of(kamaz, manTruck, paz, manBus, aston, tesla); //список машин для гонок (с водителями)
-//        List<Driver> driverList = new ArrayList<>();
-//
-//        for (Transport<?> car : forRace) {
-//            driverList.add(car.getDriver());
-//        } // идёт по списку и добавляет в список водителей, водителей созданных в конструкторе транспорта
-//        driverList.add(morgan);
-//        driverList.add(dilan);
-//        driverList.add(logan);
-//        driverList.add(nik); //добавил еще тех, кого создал отдельно
-//        System.out.println(driverList);
         Mechanic<Transport<?>> david = new Mechanic<>("David", "Shell");
         Mechanic<Transport<?>> mechanic1 = new Mechanic<>("Trap");
         Mechanic<Transport<?>> mechanic2 = new Mechanic<>("Destroyer", "Nasa");
+        /*
 //        david.fixTheCar(aston, sollers, mercedes); //чинит сразу несколько машин
 //        david.performMaintenance(sollers); // проводит тех обслуживание одной
 //
@@ -59,7 +51,7 @@ public class Main {
 //        serviceStation.addTransport(kamaz); //к авто не добавлен механик, но он будет по дефолту из метода
 //        serviceStation.addTransport(manTruck);
 //        serviceStation.addTransport(tesla);
-        serviceStation.addTransport(aston);
+//        serviceStation.addTransport(aston);
         //  serviceStation.addTransport(paz); // проверка на автобусы (выдает UnsupportedOperationException: Busses can't pass diagnostics.)
         //  serviceStation.doServiceInspection();
 
@@ -71,7 +63,33 @@ public class Main {
         t.put(aston, mechanic1);
         t.put(kamaz, mechanic2);
         t.put(dongfeng, mechanic1);
-        System.out.println(t); //в консоли объекты не повторяются. (идея подчеркивает даже
+        System.out.println(t); //в консоли объекты не повторяются. (идея подчеркивает даже*/
 
+
+        //hashSet:
+
+        List<Transport<?>> forRace = List.of(kamaz, manTruck, paz, manBus, aston, tesla); //список машин для гонок (с водителями)
+        Set<Driver> driverList = new HashSet<>();
+        driverList.add(morgan);
+        driverList.add(dilan);
+        driverList.add(logan);
+        driverList.add(nik);
+        driverList.add(nik);
+        driverList.add(morgan);
+
+        for (Transport<?> transport : forRace) {
+            if (transport.getDriver() != null) {
+                driverList.add(transport.getDriver());
+            } else {
+                System.out.println("Drivers not found anymore.");
+            }
+        } // добавление всех водителей, которые были созданы через конструктор транспорта (там есть одинаковые) - условие задачи 1 выполнено
+
+        System.out.println(driverList.size());
+        for (Driver driver : driverList) {
+            if (driver != null) {
+                System.out.println(driver.getFullName());
+            }
+        } // вывод списка по именам через итератор (условие задачи 2)
     }
 }
